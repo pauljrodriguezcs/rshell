@@ -20,7 +20,7 @@ bool execute(Object &temp, vector<string>&v){
     if(cmd == "exit"){ //checks for exit command
         //loop = false;
         //break;
-        exit(1);
+        exit(0);
     }
     
     args [0] = (char*)cmd.c_str(); //place cmd at front of array

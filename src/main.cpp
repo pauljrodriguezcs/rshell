@@ -18,7 +18,7 @@ int main(){
     while(loop){
         
         //data
-        typedef boost::tokenizer<boost::char_separator<char>> tokenizer;
+        typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
         
         //command prompt
         cout << "$ ";
@@ -26,9 +26,20 @@ int main(){
         //read in user input
         getline(cin, user_input);
         
-        //tokenize user input
-        tokenizer tok{user_input};
+        //test
+        //cout << "user input is " << user_input << endl;
+        //check for exit
+        if(user_input == "exit" || user_input  == "Exit"){
+            //cout << "first exit called" << endl;
+            break; //exit program
+            break;
+            break;
+            
+        }
         
+        //tokenize user input
+        //tokenizer tok{user_input};
+        tokenizer tok(user_input);
         vector<string>temp(1); //needed for conversion to allow for comparisons
         tokenizer::iterator it = tok.begin(); //iterator for tokenizor
         string type; // n = first or after semicolon, o OR, a AND
@@ -44,7 +55,7 @@ int main(){
             if(temp2 == "exit"){ //checks for exit command assume to be first
                 //loop = false;
                 //break;          //exit main loop end program
-                exit(1);
+                exit(0);
             }
             
             //now checks type and obtains command
@@ -69,11 +80,11 @@ int main(){
                 temp.at(0) = *it;
                 user_cmd = temp.at(0); //copy cmd to string
             }
-            else if(temp2 == "exit"){ //checks for exit command
-                //loop = false;
-                //break;          //exit main loop end program
-                exit(1);
-            }
+            //else if(temp2 == "exit"){ //checks for exit command
+            //loop = false;
+            //break;          //exit main loop end program
+            // exit(0);
+            //}
             else{ //first command
                 type = 'n';
                 //don't update iterator already at command
@@ -84,11 +95,11 @@ int main(){
             bool do_not_skip = true; // jump passed next section if necesary
             
             //check for exit command
-            if(user_cmd == "exit"){ //checks for exit command
-                //loop = false;
-                //break;
-                exit(1);
-            }
+            //if(user_cmd == "exit"){ //checks for exit command
+            //loop = false;
+            //break;
+            //  exit(1);
+            //}
             
             //update iterator here
             //if(temp2 != ";"){ //if semicolon don't update it
@@ -212,7 +223,7 @@ int main(){
                 if(user_cmd == "exit"){ //checks for exit command
                     //loop = false;
                     //break;
-                    exit(1);
+                    exit(0);
                 }
                 status = execute(temp_obj, user_args);
                 //bool function that also executes commands
@@ -222,7 +233,7 @@ int main(){
                 if(status){ //if status good execute
                     //execute no matter what status is currently
                     if(user_cmd == "exit"){ //checks for exit command
-                        exit(1);
+                        exit(0);
                     }
                     status = execute(temp_obj, user_args);
                     //executes and sets new status
@@ -235,7 +246,7 @@ int main(){
                     if(user_cmd == "exit"){ //checks for exit command
                         //loop = false;
                         //break;
-                        exit(1);
+                        exit(0);
                     }
                     status = execute(temp_obj, user_args);
                     //executes and sets new status
