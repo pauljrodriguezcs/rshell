@@ -28,7 +28,7 @@ void get_them_dets()
         cout << host[i];
     }
     
-    cout << "$" << endl << endl;
+    cout << "$ ";
 }
 
 #endif
