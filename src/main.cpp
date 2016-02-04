@@ -1,8 +1,8 @@
 #include "execute.h"
 #include "object.h"
 //#include "struct.h"
-//#include "user_details.h"
-#include <iostream>
+#include "user_details.h"
+#include <iostream> 
 #include <vector>
 #include <string>
 #include <boost/tokenizer.hpp> //needed for tokenizer
@@ -15,13 +15,14 @@ int main(){
     bool status = false; //current status of commands
     string user_input;
     
-    while(loop){
+    while(loop){    
         
         //data
         typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
         
         //command prompt
-        cout << "$ ";
+        //cout << "$ "; 
+        get_them_dets();
         
         //read in user input
         getline(cin, user_input);
@@ -31,6 +32,7 @@ int main(){
         //check for exit
         if(user_input == "exit" || user_input  == "Exit"){
             //cout << "first exit called" << endl;
+			cout << endl;
             break; //exit program
             break;
             break;
@@ -52,7 +54,7 @@ int main(){
             temp.at(0) = *it;
             string temp2 = temp.at(0);
             //checks if exit command entered
-            if(temp2 == "exit"){ //checks for exit command assume to be first
+            if(temp2 == "exit"){ //checks for exit command assume to be first 
                 //loop = false;
                 //break;          //exit main loop end program
                 exit(0);
@@ -74,39 +76,27 @@ int main(){
                 user_cmd = temp.at(0); //copy cmd to string
             }
             else if(temp2 == ";"){ // semicolon command
-                type = 'n';
+                type = 'n'; 
                 ++it; //update iterator to command
                 //++it;
                 temp.at(0) = *it;
                 user_cmd = temp.at(0); //copy cmd to string
             }
             //else if(temp2 == "exit"){ //checks for exit command
-            //loop = false;
-            //break;          //exit main loop end program
-            // exit(0);
+                //loop = false;
+                //break;          //exit main loop end program
+               // exit(0);
             //}
             else{ //first command
-                type = 'n';
+                type = 'n'; 
                 //don't update iterator already at command
                 user_cmd = temp.at(0); //copy cmd to string
             }
-            
+           
             //now check if at end of user input or single length command EX: ls
-            bool do_not_skip = true; // jump passed next section if necesary
+            bool do_not_skip = true; // jump passed next section if necesary 
             
-            //check for exit command
-            //if(user_cmd == "exit"){ //checks for exit command
-            //loop = false;
-            //break;
-            //  exit(1);
-            //}
             
-            //update iterator here
-            //if(temp2 != ";"){ //if semicolon don't update it
-            //  ++it;
-            //}
-            
-            //now check if single length command
             ++it;
             if(it != tok.end()){ //make sure nt=ot end of it
                 temp.at(0) = *it;
@@ -120,14 +110,14 @@ int main(){
                 }
             }
             
-            
+        
             
             
             if(it == tok.end()){ //end of user input
-                do_not_skip = false; //skip next section
+                do_not_skip = false; //skip next section 
             }
             else{//is safe to update iterator
-                //++it;
+                //++it; 
                 temp.at(0) = *it;
                 temp2 = temp.at(0);
             }
@@ -136,7 +126,7 @@ int main(){
             if(temp2 == "|" || temp2 == "&" || temp2 == ";"){
                 do_not_skip = false; //skip next section
             }
-            
+    
             //if skip still false then arguments and or comments exist
             while(do_not_skip){
                 //cout << "temp2 above comment is " << temp2 << endl;
@@ -152,6 +142,7 @@ int main(){
                             comment_loop = false;
                             break;
                         }
+                        //looks for end of comment
                         else{
                             temp.at(0) = *it;
                             comment = temp.at(0);
@@ -173,13 +164,13 @@ int main(){
                             
                         }
                         //cout << "comment is " << *it << " " << endl;
-                        
+                    
                     }
                     do_not_skip = false;
                 }
-                
+          
                 else{
-                    //command
+                    //command 
                     user_args.push_back(temp2); //push user argument
                     
                     //check updated iterator
@@ -202,20 +193,9 @@ int main(){
                     }//if it makes it this far then next string # or argument
                 }
             }
-            //arguments vector now ready
-            //create struct type data
-            //command_obj(string cmd, vector<string>arguments, char type);
-            Object temp_obj(type, user_cmd, user_args);
-            //cout << "user command " << user_cmd << endl;;
-            //for(unsigned i = 0; i < user_args.size(); ++i){
+            //arguments vector now ready 
             
-            //  cout << user_args.at(i) << " ";
-            //}
-            //cout << endl;
-            //cout << "type = " << type << endl;
-            //now create abject class type data
-            //call execute function if necessary
-            //repeat loop
+            Object temp_obj(type, user_cmd, user_args);
             
             //now execute time
             if(type == "n"){ //either first or ; command
