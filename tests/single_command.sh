@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ..
-bin/rshell << 'EOF'
+cd with_makefile
 ./a.out << 'EOF'
 echo this is not a test of the emergency alert system
 echo at 500 hours US satelites detected launch of Iranian ICBMs headed toward all major US cities

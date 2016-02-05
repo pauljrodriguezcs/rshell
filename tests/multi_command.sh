@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ..
-bin/rshell << 'EOF'
+cd with_makefile
 ./a.out << 'EOF'
 echo hello world
 echo dog && echo tiger woods #tiger woods is a golfer || echo help && ls; echo what is up

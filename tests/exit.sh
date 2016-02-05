@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ..
-bin/rshell << 'EOF'
+cd with_makefile
 ./a.out << 'EOF'
 exit
 EOF
