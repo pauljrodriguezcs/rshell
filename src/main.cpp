@@ -171,6 +171,17 @@ int main(){
           
                 else{
                     //command 
+                    //check if temp2 is "-"
+                    
+                    if(temp2 == "-"){
+                        ++it;
+                        if(it != tok.end()){
+                            string tempVal; 
+                            temp.at(0) = *it;
+                            tempVal = temp.at(0);
+                            temp2 = temp2 + tempVal; //string addition 
+                        }
+                    }
                     user_args.push_back(temp2); //push user argument
                     
                     //check updated iterator
