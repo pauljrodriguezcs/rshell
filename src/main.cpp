@@ -182,6 +182,36 @@ int main(){
                             temp2 = temp2 + tempVal; //string addition 
                         }
                     }
+                    
+                    //checks for symbols and adds then to string
+                    if(temp2 == "/" || temp2 == "." || temp2 == "_"){
+                        if(it != tok.end() || temp2!= "&" || temp2 != "|" || temp2 != ";"){
+                            string temp_s;
+                            if(user_args.size() >= 1){
+                                int loc = user_args.size() -1; //need prev string
+                                temp_s = user_args.at(loc);
+                                temp_s = temp_s + temp2; 
+                                
+                            }
+                            ++it;
+                            if(it!= tok.end()){
+                                string tempVal;
+                                temp.at(0) = *it;
+                                tempVal = temp.at(0);
+                                if(tempVal != "&" || tempVal != "|" || tempVal != ";"){
+                                    temp_s = temp_s + tempVal;
+                                }
+                            }
+                            
+                            if(user_args.size() >= 1){
+                                user_args.pop_back(); //rmove old string
+                                
+                            }
+                            temp2 = temp_s;
+                        }
+                        
+                    }
+                    
                     user_args.push_back(temp2); //push user argument
                     
                     //check updated iterator
