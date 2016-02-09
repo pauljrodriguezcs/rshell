@@ -9,33 +9,33 @@ need to be installed on the host environment prior to running.
 #Installation
 To install and run rshell, follow these steps in a terminal:
 
-1) git clone https://github.com/prodr010/rshell
-2) cd rshell
-3) git checkout hw2
-4) make
-5) bin/rshell
+1. git clone https://github.com/prodr010/rshell
+2. cd rshell
+3. git checkout hw2
+4. make
+5. bin/rshell
 
 #Program Features
 - Rshell supports most bash commands: `ls`, `mkdir`, `echo`, etc.
 - Rshell can also make use of connectors to run multiple commands in one line
-    ";", "&&", and "||"
-    - ";" the next command will always be executed
-    - "&&" the next command will only execute if the previous command succeeds
-    - "||"  the next command will only execute if the previous command failed
-- Anything after the "#" will be considered a comment
+    `;`, `&&`, and `||`
+    - `;` the next command will always be executed
+    - `&&` the next command will only execute if the previous command succeeds
+    - `||`  the next command will only execute if the previous command failed
+- Anything after the `#` will be considered a comment
 - To exit rshell, type in `exit`
 
 #Known Bugs
 - This program gets a hostname and a username from the host, both having a 1023 
   character maximum.
-- Under some circumstances, if "exit" is the first command, it may not exit the
+- Under some circumstances, if `exit` is the first command, it may not exit the
   shell properly.
 - Rshell assumes user enters commands in a legal fashion like entering two "&&" 
   or "||"
 - `HEAD` command will leave program running. `^C` will quit the stuck program
 - When `mkdir` command is used, when creating a directory in a directory in the   
-  /root, for example parentFolder/childFolder, childFolder will be created in 
-  /root.
+  `/root`, for example `parentFolder/childFolder`, childFolder will be created in 
+  `/root`.
 - `rm -rf <filename>` if the filename is invalid, rshell will not output an error
 - when using `touch <filename>` if extension is added, the file will be named the
   extension, for example: `touch temp.cpp` will create file `cpp`
