@@ -1,6 +1,6 @@
 # RSHELL
 Shell Terminal: This is a program that runs bash commands just like in the shell
-terminal. Examples of these commands are "ls", "mkdir", "echo", "pwd", etc.
+terminal. Examples of these commands are `ls`, `mkdir`, `echo`, `pwd`, etc.
 
 #Requirements
 This version of the shell makes use of the boost library. The boost library will 
@@ -16,14 +16,14 @@ To install and run rshell, follow these steps in a terminal:
 5) bin/rshell
 
 #Program Features
-- Rshell supports most bash commands: "ls", "mkdir", "echo", etc.
+- Rshell supports most bash commands: `ls`, `mkdir`, `echo`, etc.
 - Rshell can also make use of connectors to run multiple commands in one line
     ";", "&&", and "||"
     - ";" the next command will always be executed
     - "&&" the next command will only execute if the previous command succeeds
     - "||"  the next command will only execute if the previous command failed
 - Anything after the "#" will be considered a comment
-- To exit Rshell, type in "exit"
+- To exit rshell, type in `exit`
 
 #Known Bugs
 - This program gets a hostname and a username from the host, both having a 1023 
@@ -39,3 +39,4 @@ To install and run rshell, follow these steps in a terminal:
 - `rm -rf <filename>` if the filename is invalid, rshell will not output an error
 - when using `touch <filename>` if extension is added, the file will be named the
   extension, for example: `touch temp.cpp` will create file `cpp`
+- `vim <filename>` will work but will lag
