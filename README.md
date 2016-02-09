@@ -32,10 +32,10 @@ To install and run rshell, follow these steps in a terminal:
   shell properly.
 - Rshell assumes user enters commands in a legal fashion like entering two "&&" 
   or "||"
-- HEAD command will leave program running. "^C" will quit the stuck program
-- When "mkdir" command is used, when creating a directory in a directory in the   
+- `HEAD` command will leave program running. `^C` will quit the stuck program
+- When `mkdir` command is used, when creating a directory in a directory in the   
   /root, for example parentFolder/childFolder, childFolder will be created in 
   /root.
-- rm -rf <filename> if the filename is invalid, rshell will not output an error
-- when using touch <filename>, if extension is added, the file will be named the
-  extension, for example: touch "temp.cpp" will create file "cpp"
+- `rm -rf <filename>` if the filename is invalid, rshell will not output an error
+- when using `touch <filename>` if extension is added, the file will be named the
+  extension, for example: `touch temp.cpp` will create file `cpp`
