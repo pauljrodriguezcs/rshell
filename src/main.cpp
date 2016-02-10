@@ -184,7 +184,7 @@ int main(){
                     }
                     
                     //checks for symbols and adds then to string
-                    if(temp2 == "/" || temp2 == "." || temp2 == "_"){
+                    if(temp2 == "/" || temp2 == "." || temp2 == "_" || temp2 == "\\"){
                         if(it != tok.end() || temp2!= "&" || temp2 != "|" || temp2 != ";"){
                             string temp_s;
                             if(user_args.size() >= 1){
