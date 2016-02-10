@@ -39,3 +39,6 @@ To install and run rshell, follow these steps in a terminal:
 - `vim <filename>` will work but will lag
 - Symbols such as `$`, `{`, `^`, etc. inputted as arguments will cause parsing 
   issues. 
+- If segmentation fault were to occur during first run, disable `get_them_dets()`
+  in main.cpp and enable `$`. This is due to `getlogin()` and `gethostname()` 
+  functions not working properly in certain environments. 
