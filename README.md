@@ -1,10 +1,12 @@
-# RSHELL
+#RSHELL
 Shell Terminal: This is a program that runs bash commands just like in the shell
 terminal. Examples of these commands are `ls`, `mkdir`, `echo`, `pwd`, etc.
 
 #Requirements
 This version of the shell makes use of the boost library. The boost library will 
-need to be installed on the host environment prior to running.
+need to be installed on the host environment prior to running. Also -std=c+11 
+needs to be enabled so makefile can work. Enable using following command: 
+`source /opt/rh/devtoolset-2/enable`.
 
 #Installation
 To install and run rshell, follow these steps in a terminal:
@@ -33,10 +35,7 @@ To install and run rshell, follow these steps in a terminal:
 - Rshell assumes user enters commands in a legal fashion like entering two "&&" 
   or "||"
 - `HEAD` command will leave program running. `^C` will quit the stuck program
-- When `mkdir` command is used, when creating a directory in a directory in the   
-  `/root`, for example `parentFolder/childFolder`, childFolder will be created in 
-  `/root`.
 - `rm -rf <filename>` if the filename is invalid, rshell will not output an error
-- when using `touch <filename>` if extension is added, the file will be named the
-  extension, for example: `touch temp.cpp` will create file `cpp`
 - `vim <filename>` will work but will lag
+- Symbols such as `$`, `{`, `^`, etc. inputted as arguments will cause parsing 
+  issues. 
