@@ -41,4 +41,5 @@ To install and run rshell, follow these steps in a terminal:
   issues. 
 - If segmentation fault were to occur during first run, disable `get_them_dets()`
   in main.cpp and enable `$`. This is due to `getlogin()` and `gethostname()` 
-  functions not working properly in certain environments. 
+  functions not working properly in certain environments. Should work in hammer
+  server. 
