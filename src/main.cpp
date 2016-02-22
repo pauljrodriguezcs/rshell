@@ -1,8 +1,8 @@
 #include "execute.h"
 #include "object.h"
-//#include "struct.h"
+#include "testfunctions.h"
 #include "user_details.h"
-#include <iostream> 
+#include <iostream>
 #include <vector>
 #include <string>
 #include <boost/tokenizer.hpp> //needed for tokenizer
@@ -15,14 +15,14 @@ int main(){
     bool status = false; //current status of commands
     string user_input;
     
-    while(loop){    
+    while(loop){
         
         //data
         typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
         
         //command prompt
-        //cout << "$ "; 
-        get_them_dets();
+        cout << "$ ";
+        //get_them_dets();
         
         //read in user input
         getline(cin, user_input);
@@ -32,7 +32,7 @@ int main(){
         //check for exit
         if(user_input == "exit" || user_input  == "Exit"){
             //cout << "first exit called" << endl;
-			cout << endl;
+            cout << endl;
             break; //exit program
             break;
             break;
@@ -47,6 +47,7 @@ int main(){
         string type; // n = first or after semicolon, o OR, a AND
         
         while(it != tok.end()){ //once end of user input reached exit loop
+            
             string user_cmd; //string to store command temporarily
             vector<string> user_args; //vector to temp store arguments
             
@@ -54,13 +55,14 @@ int main(){
             temp.at(0) = *it;
             string temp2 = temp.at(0);
             //checks if exit command entered
-            if(temp2 == "exit"){ //checks for exit command assume to be first 
+            if(temp2 == "exit"){ //checks for exit command assume to be first
                 //loop = false;
                 //break;          //exit main loop end program
                 exit(0);
             }
             
             //now checks type and obtains command
+            
             if(temp2 == "|"){
                 type = 'o'; //type OR
                 ++it; //update iterator to command
@@ -76,25 +78,25 @@ int main(){
                 user_cmd = temp.at(0); //copy cmd to string
             }
             else if(temp2 == ";"){ // semicolon command
-                type = 'n'; 
+                type = 'n';
                 ++it; //update iterator to command
                 //++it;
                 temp.at(0) = *it;
                 user_cmd = temp.at(0); //copy cmd to string
             }
             //else if(temp2 == "exit"){ //checks for exit command
-                //loop = false;
-                //break;          //exit main loop end program
-               // exit(0);
+            //loop = false;
+            //break;          //exit main loop end program
+            // exit(0);
             //}
             else{ //first command
-                type = 'n'; 
+                type = 'n';
                 //don't update iterator already at command
                 user_cmd = temp.at(0); //copy cmd to string
             }
-           
+            
             //now check if at end of user input or single length command EX: ls
-            bool do_not_skip = true; // jump passed next section if necesary 
+            bool do_not_skip = true; // jump passed next section if necesary
             
             
             ++it;
@@ -102,7 +104,12 @@ int main(){
                 temp.at(0) = *it;
                 string temp3 = temp.at(0);
                 //check if at end of single length command
+                //added for assn 3
                 if(temp3 == "|" || temp3 == "&" || temp3 == ";"){
+                    //added assn3
+                    //if(temp3 == "]"){
+                    // ++it;
+                    //}
                     do_not_skip = false; // skip next section
                 }
                 else{
@@ -110,30 +117,35 @@ int main(){
                 }
             }
             
-        
+            
             
             
             if(it == tok.end()){ //end of user input
-                do_not_skip = false; //skip next section 
+                do_not_skip = false; //skip next section
             }
             else{//is safe to update iterator
-                //++it; 
+                //++it;
                 temp.at(0) = *it;
                 temp2 = temp.at(0);
             }
             
             //check if at end of single length command
+            //added for assn3
             if(temp2 == "|" || temp2 == "&" || temp2 == ";"){
+                //added assn3
+                //if(temp2 == "]"){
+                //  ++it;
+                //}
                 do_not_skip = false; //skip next section
             }
-    
+            
             //if skip still false then arguments and or comments exist
             while(do_not_skip){
                 //cout << "temp2 above comment is " << temp2 << endl;
                 if(temp2 == "#"){ //comment reached
                     string comment = "";
                     bool comment_loop = true;
-                    //while(comment != "|" || comment != "&" || comment != ";"){ //note line longer than 80
+                    
                     while(comment_loop){
                         ++it; //update iterator till end of comment
                         
@@ -161,36 +173,45 @@ int main(){
                                 comment_loop = false;
                                 break;
                             }
+                            //added for assn3
+                            //if(comment == "]"){
+                            //added assn3;
+                            //  ++it;
+                            //do_not_skip = false;
+                            //comment_loop = false;
+                            //break;
+                            //}
                             
                         }
                         //cout << "comment is " << *it << " " << endl;
-                    
+                        
                     }
                     do_not_skip = false;
                 }
-          
+                
                 else{
-                    //command 
+                    //command
                     //check if temp2 is "-"
                     
                     if(temp2 == "-"){
                         ++it;
                         if(it != tok.end()){
-                            string tempVal; 
+                            string tempVal;
                             temp.at(0) = *it;
                             tempVal = temp.at(0);
-                            temp2 = temp2 + tempVal; //string addition 
+                            temp2 = temp2 + tempVal; //string addition
                         }
                     }
                     
                     //checks for symbols and adds then to string
                     if(temp2 == "/" || temp2 == "." || temp2 == "_" || temp2 == "\\"){
+                        //added assn3
                         if(it != tok.end() || temp2!= "&" || temp2 != "|" || temp2 != ";"){
                             string temp_s;
                             if(user_args.size() >= 1){
                                 int loc = user_args.size() -1; //need prev string
                                 temp_s = user_args.at(loc);
-                                temp_s = temp_s + temp2; 
+                                temp_s = temp_s + temp2;
                                 
                             }
                             ++it;
@@ -198,6 +219,7 @@ int main(){
                                 string tempVal;
                                 temp.at(0) = *it;
                                 tempVal = temp.at(0);
+                                //added assn3
                                 if(tempVal != "&" || tempVal != "|" || tempVal != ";"){
                                     temp_s = temp_s + tempVal;
                                 }
@@ -231,23 +253,88 @@ int main(){
                         if(temp2 == ";"){
                             do_not_skip = false;
                         }
+                        //added assn3
+                        //if(temp2 == "]"){
+                        //  do_not_skip = false;
+                        //}
                     }//if it makes it this far then next string # or argument
                 }
             }
-            //arguments vector now ready 
-            
+            //arguments vector now ready
+            //cout << "the user command is " << user_cmd << endl;
             Object temp_obj(type, user_cmd, user_args);
             
             //now execute time
             if(type == "n"){ //either first or ; command
+                
                 //execute no matter what status is currently
                 if(user_cmd == "exit"){ //checks for exit command
                     //loop = false;
                     //break;
                     exit(0);
                 }
-                status = execute(temp_obj, user_args);
-                //bool function that also executes commands
+                if(user_cmd != "test" || user_cmd != "["){
+                    status = execute(temp_obj, user_args);
+                    //bool function that also executes commands
+                }
+                
+                if(user_cmd == "test" || user_cmd == "["){
+                    
+                    //test if file / directory exist
+                    if(user_args.size() != 0){
+                        if(user_args.at(0) == "-e"){
+                            //cout << "ok -e" << endl;
+                            if(user_args.size() >= 2){
+                                string file = user_args.at(1);
+                                //whole next command will be path
+                                status = fileExists(file);
+                                if(status){
+                                    cout << "(TRUE)" << endl;
+                                }
+                                else{
+                                    cout << "(FALSE)" << endl;
+                                }
+                            }
+                        }
+                        //test if regular file
+                        else if(user_args.at(0) == "-f"){
+                            //cout << "ok -f" << endl;
+                            if(user_args.size() >= 2){
+                                string file = user_args.at(1);
+                                //whole next command will be path
+                                status = reg_file(file);
+                            }
+                        }
+                        
+                        //test if is directory
+                        else if(user_args.at(0) == "-d"){
+                            //cout << "ok -d" << endl;
+                            if(user_args.size() >= 2){
+                                string file = user_args.at(1);
+                                //whole next command will be path
+                                status = directory(file);
+                            }
+                        }
+                        else{
+                            //default test if file / directory exist
+                            //cout << "ok -e" << endl;
+                            if(user_args.size() >= 1){
+                                string file = user_args.at(0);
+                                //whole next command will be path
+                                status = fileExists(file);
+                                if(status){
+                                    cout << "(TRUE)" << endl;
+                                }
+                                else{
+                                    cout << "(FALSE)" << endl;
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                
+                
                 
             }
             else if(type == "a"){ //AND command
@@ -256,8 +343,65 @@ int main(){
                     if(user_cmd == "exit"){ //checks for exit command
                         exit(0);
                     }
-                    status = execute(temp_obj, user_args);
-                    //executes and sets new status
+                    if(user_cmd != "test" || user_cmd != "["){
+                        status = execute(temp_obj, user_args);
+                        //bool function that also executes commands
+                    }
+                    
+                    if(user_cmd == "test" || user_cmd == "["){
+                        
+                        if(user_args.size() != 0){
+                            //test if file / directory exist
+                            if(user_args.at(0) == "-e"){
+                                //    cout << "ok -e" << endl;
+                                if(user_args.size() >= 2){
+                                    string file = user_args.at(1);
+                                    //whole next command will be path
+                                    status = fileExists(file);
+                                    if(status){
+                                        cout << "(TRUE)" << endl;
+                                    }
+                                    else{
+                                        cout << "(FALSE)" << endl;
+                                    }
+                                }
+                            }
+                            //test if regular file
+                            else if(user_args.at(0) == "-f"){
+                                //  cout << "ok -f" << endl;
+                                if(user_args.size() >= 2){
+                                    string file = user_args.at(1);
+                                    //whole next command will be path
+                                    status = reg_file(file);
+                                }
+                            }
+                            //test if directory
+                            else if(user_args.at(0) == "-d"){
+                                //cout << "ok -d" << endl;
+                                if(user_args.size() >= 2){
+                                    string file = user_args.at(1);
+                                    //whole next command will be path
+                                    status = directory(file);
+                                }
+                            }
+                            else{
+                                //test if file / directory exist
+                                //cout << "ok -e" << endl;
+                                if(user_args.size() >= 1){
+                                    string file = user_args.at(0);
+                                    //whole next command will be path
+                                    status = fileExists(file);
+                                    if(status){
+                                        cout << "(TRUE)" << endl;
+                                    }
+                                    else{
+                                        cout << "(FALSE)" << endl;
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
                 }
                 //else do nothing and skip execution
             }
@@ -269,8 +413,65 @@ int main(){
                         //break;
                         exit(0);
                     }
-                    status = execute(temp_obj, user_args);
-                    //executes and sets new status
+                    if(user_cmd != "test" || user_cmd != "["){
+                        status = execute(temp_obj, user_args);
+                        //bool function that also executes commands
+                    }
+                    
+                    if(user_cmd == "test" || user_cmd == "["){
+                        
+                        if(user_args.size() != 0){
+                            //test if file / directory exist
+                            if(user_args.at(0) == "-e"){
+                                //  cout << "ok -e" << endl;
+                                if(user_args.size() >= 2){
+                                    string file = user_args.at(1);
+                                    //whole next command will be path
+                                    status = fileExists(file);
+                                    if(status){
+                                        cout << "(TRUE)" << endl;
+                                    }
+                                    else{
+                                        cout << "(FALSE)" << endl;
+                                    }
+                                }
+                            }
+                            //test if regular file
+                            else if(user_args.at(0) == "-f"){
+                                //cout << "ok -f" << endl;
+                                if(user_args.size() >= 2){
+                                    string file = user_args.at(1);
+                                    //whole next command will be path
+                                    status = reg_file(file);
+                                }
+                            }
+                            //test if directory
+                            else if(user_args.at(0) == "-d"){
+                                //cout << "ok -d" << endl;
+                                if(user_args.size() >= 2){
+                                    string file = user_args.at(1);
+                                    //whole next command will be path
+                                    status = directory(file);
+                                }
+                            }
+                            else{
+                                //default test if file / directory exist
+                                //cout << "ok -e" << endl;
+                                if(user_args.size() >= 1){
+                                    string file = user_args.at(0);
+                                    //whole next command will be path
+                                    status = fileExists(file);
+                                    if(status){
+                                        cout << "(TRUE)" << endl;
+                                    }
+                                    else{
+                                        cout << "(FALSE)" << endl;
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
                 }
                 //if status good do not execute and ski
             }
