@@ -7,15 +7,16 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
+#include <iostream> 
 #include <vector>
 
 using namespace std;
 
 //-e command tests if file/directory exist
-bool fileExists(const std::string& file){
+bool fileExists(const string &file){
     struct stat buf;
-    return (stat(file.c_str(), &buf) == 0);
+    //return true if file/directory exist
+    return (stat(file.c_str(), &buf) == 0); 
 }
 
 
@@ -26,40 +27,38 @@ bool directory(const string &file){
     if(stat(file.c_str(), &buf) == -1) {
         perror("stat");
         cur_stat = false;
-        cout << "(False)" << endl;
+        cout << "(FALSE)" << endl;
     }
     
     else{
-        printf(" ");
         
-        switch (buf.st_mode & S_IFMT) {
-            case S_IFDIR:  printf("(True)\n");               break;
-            default:      cur_stat = false; printf("(False)\n");        break;
+        switch (buf.st_mode & S_IFMT){
+        case S_IFDIR:  cout << "(TRUE)" << endl; break;  
+        default: cur_stat = false; cout << "(FALSE)" << endl; break;
         }
-        
+
     }
     return cur_stat;
 }
 
 
 //-f test if regular file exist
-bool reg_file(const std::string& file){
-    bool cur_stat = true;
+bool reg_file(const string & file){
+     bool cur_stat = true;
     struct stat buf;
-    if(stat(file.c_str(), &buf) == -1) {
+    if(stat(file.c_str(), &buf) == -1){
         perror("stat");
         cur_stat = false;
-        cout << "(False)" << endl;
+        cout << "(FALSE)" << endl;
     }
     
     else{
-        printf(" ");
         
-        switch (buf.st_mode & S_IFMT) {
-            case S_IFREG: printf("(True)\n"); break;
-            default:      cur_stat =false; printf("(False)\n");     break;
+        switch (buf.st_mode & S_IFMT){
+        case S_IFREG: cout << "(TRUE)" << endl; break;
+        default: cur_stat =false; cout << "(FALSE)" << endl; break;
         }
-        
+
     }
     
     return cur_stat;

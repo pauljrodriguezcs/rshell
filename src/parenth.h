@@ -1,8 +1,9 @@
+#ifndef parenth_h
+#define parenth_h
 #include "execute.h"
 #include "object.h"
 #include "testfunctions.h"
 #include "user_details.h"
-#include "parenth.h"
 #include <iostream> 
 #include <vector>
 #include <string>
@@ -10,48 +11,69 @@
 #include <stdlib.h>
 using namespace std;
 
+typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
 
-int main(){
-    bool loop = true;   //bool for loop
-    bool status = false; //current status of commands
-    string user_input;
-    
-    while(loop){ 
-        
-        //set both skips to false
-        bool superskip = false;
-        bool superskip2 = false;
-         
-        //data
-        typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-        
-        //command prompt
-        cout << "$ "; 
-        //get_them_dets();
-        
-        //read in user input
-        getline(cin, user_input);
-        
-        //test
-        //cout << "user input is " << user_input << endl;
-        //check for exit
-        if(user_input == "exit" || user_input  == "Exit"){
-            //cout << "first exit called" << endl;
-			cout << endl;
-            return 0;
-            
+//function to skip to end of parenthesis
+void orskip(tokenizer::iterator &it, tokenizer &tok){
+    //cout << "orskip called" << endl;
+    //cout << "in function 1" << endl;
+    vector<string>temp(1); //needed for conversion to allow for comparisons
+    string cur_val;
+    bool loop_status = true;
+    int count = 1; //number of "(" detected
+    ++it; //update iterator past "("
+    //cout << "in function 2" << endl;
+    while(it != tok.end() && loop_status){
+        temp.at(0) = *it;
+        cur_val = temp.at(0);
+        //cout << "cur_val = " << cur_val << endl;
+        if(cur_val == "("){
+            ++count; //number of internal parenthesis
+        }
+        if(cur_val == ")"){
+            --count; //decriment count
+            if(count == 0){
+                loop_status = false;
+            }
         }
         
-        //tokenize user input
-        //tokenizer tok{user_input};
-        tokenizer tok(user_input);
-        vector<string>temp(1); //needed for conversion to allow for comparisons
-        tokenizer::iterator it = tok.begin(); //iterator for tokenizor
-        string type; // n = first or after semicolon, o OR, a AND
+        ++it;
+    }
+    //cout << "past first loop" << endl;
+    //now continue until connector or end of input reached
+    loop_status = true;
+    //int num = 0;
+    while(it != tok.end() && loop_status){
+        //cout << "inside second loop" << endl;
+        temp.at(0) = *it;
+        cur_val = temp.at(0);
+        //cout << "cur_val = " << cur_val << endl;
+        if(cur_val == ";" || cur_val == "|" || cur_val == "&" || cur_val == ")"){
+            loop_status = false;
+            break;
+        }
+            ++it;
+        //cout << cur_val << endl;
+    }
+    //cout << "past second loop" << endl;
+    
+    //successfully looped past complete parenthesis 
+}
+
+
+//------------------------------------------------------------------------------
+
+bool parenthesis_detect(tokenizer::iterator &it, tokenizer &tok){
+    //cout << "parenthesis_detect called " << endl;
+    bool status = false;
+    bool final_parentheses = false; // set true when ")" detected
+    vector<string>temp(1); //needed for conversion to allow for comparisons
+    string type; // n = first or after semicolon, o OR, a AND
+    ++it; //update past "("
         
-        while(it != tok.end()){ //once end of user input reached exit loop
-            superskip = false;
-            superskip2 = false;
+        while(it != tok.end() && final_parentheses != true){ //once end of user input reached exit loop
+            bool superskip = false;
+            bool superskip2 = false;
             
             string user_cmd; //string to store command temporarily
             vector<string> user_args; //vector to temp store arguments
@@ -66,11 +88,16 @@ int main(){
                 exit(0);
             }
             
-            //checks if first input is parenthesis
             if(temp2 == "("){
-                //execute everything in parenthesis first
                 status = parenthesis_detect(it, tok);
                 superskip = true;
+            }
+            
+            //this should only be used if last call was to orskip
+            if(temp2 == ")"){
+                //cout << "detected" <<endl;
+                ++it; //update iterator past ")"
+                return status;
             }
             
             if(superskip != true){
@@ -92,9 +119,7 @@ int main(){
                    //cout << "out of orskip" << endl;
                    //cout << *it << endl;
                 }
-                
                 if(status == false && user_cmd == "("){
-                //call parentheses execute function
                     status = parenthesis_detect(it, tok);
                     superskip2 = true;
                 }
@@ -114,9 +139,8 @@ int main(){
                    //cout << "out of orskip" << endl;
                    //cout << *it << endl;
                 }
-                
                 if(status == true && user_cmd == "("){
-                //call parentheses execute function
+                    //recursive call to parenthesis function
                     status = parenthesis_detect(it, tok);
                     superskip2 = true;
                 }
@@ -129,7 +153,7 @@ int main(){
                 temp.at(0) = *it;
                 user_cmd = temp.at(0); //copy cmd to string
                 if(user_cmd == "("){
-                    //call parentheses execute function
+                    //recursive call to parenthesis function
                     status = parenthesis_detect(it, tok);
                     superskip2 = true;
                 }
@@ -144,7 +168,7 @@ int main(){
                 //don't update iterator already at command
                 user_cmd = temp.at(0); //copy cmd to string
                 if(user_cmd == "("){
-                    //call parentheses execute function
+                    //recursive call to parenthesis function
                     status = parenthesis_detect(it, tok);
                     superskip2 = true;
                 }
@@ -153,22 +177,21 @@ int main(){
             // put or skip here assn3
             if(superskip2 == false){
            
-           //cout << "user_cmd is " << user_cmd << endl;
             //now check if at end of user input or single length command EX: ls
             bool do_not_skip = true; // jump passed next section if necesary 
             
             
             ++it;
-            if(it != tok.end()){ //make sure nt=ot end of it
+            if(it != tok.end()){ //make sure not end of it
                 temp.at(0) = *it;
                 string temp3 = temp.at(0);
                 //check if at end of single length command
                 //added for assn 3
-                if(temp3 == "|" || temp3 == "&" || temp3 == ";"){
+                if(temp3 == "|" || temp3 == "&" || temp3 == ";" || temp3 == "(" || temp3 == ")"){
                     //added assn3
-                    //if(temp3 == "]"){
-                       // ++it;
-                    //}
+                    if(temp3 == ")"){
+                        final_parentheses = true;
+                    }
                     do_not_skip = false; // skip next section
                 }
                 else{
@@ -190,15 +213,15 @@ int main(){
             
             //check if at end of single length command
             //added for assn3
-            if(temp2 == "|" || temp2 == "&" || temp2 == ";"){
+            if(temp2 == "|" || temp2 == "&" || temp2 == ";" || temp2 == "(" || temp2 == ")"){
                 //added assn3
-                //if(temp2 == "]"){
-                  //  ++it;
-                //} 
+                if(temp2 == ")"){
+                  final_parentheses = true;
+                } 
                 do_not_skip = false; //skip next section
             }
     
-            //if skip still false then arguments and or comments exist
+            //if skip still true then arguments and or comments exist
             while(do_not_skip){
                 //cout << "temp2 above comment is " << temp2 << endl;
                 if(temp2 == "#"){ //comment reached
@@ -233,13 +256,20 @@ int main(){
                                 break;
                             }
                             //added for assn3
-                            //if(comment == "]"){
+                            if(comment == "("){
                                 //added assn3;
-                              //  ++it;
-                                //do_not_skip = false;
-                                //comment_loop = false;
-                                //break;
-                            //}
+                                do_not_skip = false;
+                                comment_loop = false;
+                                break;
+                            }
+                            //added for assn3
+                            if(comment == ")"){
+                                //added assn3;
+                                do_not_skip = false;
+                                comment_loop = false;
+                                final_parentheses = true;
+                                break;
+                            }
                             
                         }
                         //cout << "comment is " << *it << " " << endl;
@@ -265,7 +295,7 @@ int main(){
                     //checks for symbols and adds then to string
                     if(temp2 == "/" || temp2 == "." || temp2 == "_" || temp2 == "\\"){
                         //added assn3
-                        if(it != tok.end() || temp2!= "&" || temp2 != "|" || temp2 != ";"){
+                        if(it != tok.end() || temp2!= "&" || temp2 != "|" || temp2 != ";" || temp2 != "(" || temp2 != ")"){
                             string temp_s;
                             if(user_args.size() >= 1){
                                 int loc = user_args.size() -1; //need prev string
@@ -279,7 +309,7 @@ int main(){
                                 temp.at(0) = *it;
                                 tempVal = temp.at(0);
                                 //added assn3
-                                if(tempVal != "&" || tempVal != "|" || tempVal != ";"){
+                                if(tempVal != "&" || tempVal != "|" || tempVal != ";" || temp2 != "(" || temp2 != ")"){
                                     temp_s = temp_s + tempVal;
                                 }
                             }
@@ -313,9 +343,14 @@ int main(){
                             do_not_skip = false;
                         }
                         //added assn3
-                        //if(temp2 == "]"){
-                          //  do_not_skip = false;
-                        //}
+                        if(temp2 == "("){
+                            do_not_skip = false;
+                        }
+                        //added assn3
+                        if(temp2 == ")"){
+                            do_not_skip = false;
+                            final_parentheses = true;
+                        }
                     }//if it makes it this far then next string # or argument
                 }
             }
@@ -539,7 +574,12 @@ int main(){
             //cout << "at end of or skip " << endl;
             } //end of superskip
         } //end of while loop
-        
-    }
-    return 0;
+        //cout << "it before update" << *it << endl;
+        ++it; //update iterator past ")"
+        //cout << "it after update" << *it << endl;
+        return status;
 }
+
+
+
+#endif
