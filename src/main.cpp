@@ -266,21 +266,34 @@ int main(){
                     if(temp2 == "/" || temp2 == "." || temp2 == "_" || temp2 == "\\"){
                         //added assn3
                         if(it != tok.end() || temp2!= "&" || temp2 != "|" || temp2 != ";"){
+                            bool skip_next = true;
                             string temp_s;
                             if(user_args.size() >= 1){
                                 int loc = user_args.size() -1; //need prev string
                                 temp_s = user_args.at(loc);
-                                temp_s = temp_s + temp2; 
+                                //just added
+                                //cout << "temp_s = " << temp_s << endl;
+                                if(temp_s == "-e" || temp_s == "-d" || temp_s == "-f"){
+                                    //skip if one of these before
+                                    //cout << "went into skip" << endl;
+                                    skip_next = false;
+                                }
+                                else{
+                                    temp_s = temp_s + temp2;
+                                }
                                 
                             }
-                            ++it;
-                            if(it!= tok.end()){
-                                string tempVal;
-                                temp.at(0) = *it;
-                                tempVal = temp.at(0);
-                                //added assn3
-                                if(tempVal != "&" || tempVal != "|" || tempVal != ";"){
-                                    temp_s = temp_s + tempVal;
+                            if(skip_next){
+                                ++it;
+                                if(it!= tok.end()){
+                                    string tempVal;
+                                    temp.at(0) = *it;
+                                    tempVal = temp.at(0);
+                                    //cout << "tempVal = " << tempVal << endl;
+                                    //added assn3
+                                    if(tempVal != "&" || tempVal != "|" || tempVal != ";"){
+                                        temp_s = temp_s + tempVal;
+                                    }
                                 }
                             }
                             
@@ -293,7 +306,12 @@ int main(){
                         
                     }
                     
+                    //cout << "temp2 = " << temp2 << endl;
                     user_args.push_back(temp2); //push user argument
+                   // cout << "user_cmd is " << user_cmd << endl;
+                    //for(unsigned i = 0; i < user_args.size(); ++i){
+                    //    cout << "argument " << i << " is " << user_args.at(i) << endl;
+                    //}
                     
                     //check updated iterator
                     ++it;
