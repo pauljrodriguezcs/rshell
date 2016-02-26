@@ -85,7 +85,8 @@ bool parenthesis_detect(tokenizer::iterator &it, tokenizer &tok){
             if(temp2 == "exit"){ //checks for exit command assume to be first 
                 //loop = false;
                 //break;          //exit main loop end program
-                exit(0);
+                //exit(0);
+                return 0;
             }
             
             if(temp2 == "("){
@@ -150,11 +151,18 @@ bool parenthesis_detect(tokenizer::iterator &it, tokenizer &tok){
                 type = 'n'; 
                 ++it; //update iterator to command
                 //++it;
-                temp.at(0) = *it;
-                user_cmd = temp.at(0); //copy cmd to string
-                if(user_cmd == "("){
-                    //recursive call to parenthesis function
-                    status = parenthesis_detect(it, tok);
+                //bug fix
+                if(it != tok.end()){
+                    temp.at(0) = *it;
+                    user_cmd = temp.at(0); //copy cmd to string
+                    if(user_cmd == "("){
+                        //call parentheses execute function
+                        status = parenthesis_detect(it, tok);
+                        superskip2 = true;
+                    }
+                }
+                //fixes bug with comments
+                else{
                     superskip2 = true;
                 }
             }
@@ -234,7 +242,7 @@ bool parenthesis_detect(tokenizer::iterator &it, tokenizer &tok){
                         if(it == tok.end()){
                             do_not_skip = false;
                             comment_loop = false;
-                            break;
+                            //break;
                         }
                         //looks for end of comment
                         else{
@@ -243,24 +251,24 @@ bool parenthesis_detect(tokenizer::iterator &it, tokenizer &tok){
                             if(comment == ";"){
                                 do_not_skip = false;
                                 comment_loop = false;
-                                break;
+                                //break;
                             }
                             if(comment == "&"){
                                 do_not_skip = false;
                                 comment_loop = false;
-                                break;
+                                //break;
                             }
                             if(comment == "|"){
                                 do_not_skip = false;
                                 comment_loop = false;
-                                break;
+                                //break;
                             }
                             //added for assn3
                             if(comment == "("){
                                 //added assn3;
                                 do_not_skip = false;
                                 comment_loop = false;
-                                break;
+                                //break;
                             }
                             //added for assn3
                             if(comment == ")"){
@@ -268,7 +276,7 @@ bool parenthesis_detect(tokenizer::iterator &it, tokenizer &tok){
                                 do_not_skip = false;
                                 comment_loop = false;
                                 final_parentheses = true;
-                                break;
+                                //break;
                             }
                             
                         }
@@ -378,7 +386,8 @@ bool parenthesis_detect(tokenizer::iterator &it, tokenizer &tok){
                 if(user_cmd == "exit"){ //checks for exit command
                     //loop = false;
                     //break;
-                    exit(0);
+                    //exit(0);
+                    return 0;
                 }
                 if(user_cmd != "test" || user_cmd != "["){
                     status = execute(temp_obj, user_args);
@@ -448,7 +457,8 @@ bool parenthesis_detect(tokenizer::iterator &it, tokenizer &tok){
                 if(status){ //if status good execute
                     //execute no matter what status is currently
                     if(user_cmd == "exit"){ //checks for exit command
-                        exit(0);
+                        //exit(0);
+                        return 0;
                     }
                     if(user_cmd != "test" || user_cmd != "["){
                         status = execute(temp_obj, user_args);
@@ -518,7 +528,8 @@ bool parenthesis_detect(tokenizer::iterator &it, tokenizer &tok){
                     if(user_cmd == "exit"){ //checks for exit command
                         //loop = false;
                         //break;
-                        exit(0);
+                        //exit(0);
+                        return 0;
                     }
                     if(user_cmd != "test" || user_cmd != "["){
                     status = execute(temp_obj, user_args);

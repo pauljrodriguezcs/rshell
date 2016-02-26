@@ -13,6 +13,7 @@
 using namespace std;
 
 bool execute(Object &temp, vector<string>&v){
+    //cout << "execute called! " << endl;
     char * args[1024];
     bool success = true; //this will be function return value
     //obtain user command

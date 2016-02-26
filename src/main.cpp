@@ -8,12 +8,13 @@
 #include <string>
 #include <boost/tokenizer.hpp> //needed for tokenizer
 #include <stdlib.h>
+#include <cstdlib>
 using namespace std;
 
 
 int main(){
     bool loop = true;   //bool for loop
-    bool status = false; //current status of commands
+    //bool status = false; //current status of commands
     string user_input;
     
     while(loop){ 
@@ -21,6 +22,7 @@ int main(){
         //set both skips to false
         bool superskip = false;
         bool superskip2 = false;
+        bool status = false; //current status of commands
          
         //data
         typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
@@ -32,22 +34,27 @@ int main(){
         //read in user input
         getline(cin, user_input);
         
-        //test
-        //cout << "user input is " << user_input << endl;
-        //check for exit
-        if(user_input == "exit" || user_input  == "Exit"){
-            //cout << "first exit called" << endl;
-			cout << endl;
-            return 0;
-            
-        }
-        
         //tokenize user input
         //tokenizer tok{user_input};
         tokenizer tok(user_input);
         vector<string>temp(1); //needed for conversion to allow for comparisons
         tokenizer::iterator it = tok.begin(); //iterator for tokenizor
         string type; // n = first or after semicolon, o OR, a AND
+        
+        //test
+        //cout << "user input is " << user_input << endl;
+        //check for exit
+        if(user_input == "exit" || user_input  == "Exit"){
+            //cout << "first exit called" << endl;
+            status = false;
+            //cout << "in exit" << endl;
+            it = tok.end();
+			cout << endl;
+		    break;
+            return 0;
+            
+        }
+        
         
         while(it != tok.end()){ //once end of user input reached exit loop
             superskip = false;
@@ -63,7 +70,8 @@ int main(){
             if(temp2 == "exit"){ //checks for exit command assume to be first 
                 //loop = false;
                 //break;          //exit main loop end program
-                exit(0);
+                //exit(0);
+                return 0;
             }
             
             //checks if first input is parenthesis
@@ -126,11 +134,18 @@ int main(){
                 type = 'n'; 
                 ++it; //update iterator to command
                 //++it;
-                temp.at(0) = *it;
-                user_cmd = temp.at(0); //copy cmd to string
-                if(user_cmd == "("){
-                    //call parentheses execute function
-                    status = parenthesis_detect(it, tok);
+                //bug fix
+                if(it != tok.end()){
+                    temp.at(0) = *it;
+                    user_cmd = temp.at(0); //copy cmd to string
+                    if(user_cmd == "("){
+                        //call parentheses execute function
+                        status = parenthesis_detect(it, tok);
+                        superskip2 = true;
+                    }
+                }
+                //fixes bug with comments
+                else{
                     superskip2 = true;
                 }
             }
@@ -211,7 +226,7 @@ int main(){
                         if(it == tok.end()){
                             do_not_skip = false;
                             comment_loop = false;
-                            break;
+                            //break;
                         }
                         //looks for end of comment
                         else{
@@ -220,17 +235,17 @@ int main(){
                             if(comment == ";"){
                                 do_not_skip = false;
                                 comment_loop = false;
-                                break;
+                                //break;
                             }
                             if(comment == "&"){
                                 do_not_skip = false;
                                 comment_loop = false;
-                                break;
+                                //break;
                             }
                             if(comment == "|"){
                                 do_not_skip = false;
                                 comment_loop = false;
-                                break;
+                                //break;
                             }
                             //added for assn3
                             //if(comment == "]"){
@@ -348,7 +363,8 @@ int main(){
                 if(user_cmd == "exit"){ //checks for exit command
                     //loop = false;
                     //break;
-                    exit(0);
+                    //exit(0);
+                    return 0;
                 }
                 if(user_cmd != "test" || user_cmd != "["){
                     status = execute(temp_obj, user_args);
@@ -418,7 +434,8 @@ int main(){
                 if(status){ //if status good execute
                     //execute no matter what status is currently
                     if(user_cmd == "exit"){ //checks for exit command
-                        exit(0);
+                        //exit(0);
+                        return 0;
                     }
                     if(user_cmd != "test" || user_cmd != "["){
                         status = execute(temp_obj, user_args);
@@ -488,7 +505,8 @@ int main(){
                     if(user_cmd == "exit"){ //checks for exit command
                         //loop = false;
                         //break;
-                        exit(0);
+                        //exit(0);
+                        return 0;
                     }
                     if(user_cmd != "test" || user_cmd != "["){
                     status = execute(temp_obj, user_args);

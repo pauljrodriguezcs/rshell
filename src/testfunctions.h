@@ -25,7 +25,7 @@ bool directory(const string &file){
     bool cur_stat = true;
     struct stat buf;
     if(stat(file.c_str(), &buf) == -1) {
-        perror("stat");
+        //perror("stat");
         cur_stat = false;
         cout << "(FALSE)" << endl;
     }
@@ -47,7 +47,7 @@ bool reg_file(const string & file){
      bool cur_stat = true;
     struct stat buf;
     if(stat(file.c_str(), &buf) == -1){
-        perror("stat");
+        //perror("stat");
         cur_stat = false;
         cout << "(FALSE)" << endl;
     }
