@@ -20,26 +20,33 @@ To install and run rshell, follow these steps in a terminal:
 #Program Features
 - Rshell supports most bash commands: `ls`, `mkdir`, `echo`, etc.
 - Rshell can also make use of connectors to run multiple commands in one line
-    `;`, `&&`, and `||`
-    - `;` the next command will always be executed
-    - `&&` the next command will only execute if the previous command succeeds
-    - `||`  the next command will only execute if the previous command failed
+`;`, `&&`, and `||`
+- `;` the next command will always be executed
+- `&&` the next command will only execute if the previous command succeeds
+- `||`  the next command will only execute if the previous command failed
 - Anything after the `#` will be considered a comment
 - To exit rshell, type in `exit`
 
+#Version HW2 New Features
+- Now adds support for parentheses `()` as precendence operator.
+- Adds `test` functionality to rshell as well as its symbolic equivalent `[]`.
+`-e` checks if the file/directory exists
+`-­f` checks if the file/directory exists and is a regular file
+`-d` checks if the file/directory exists and is a directory
+
 #Known Bugs
 - This program gets a hostname and a username from the host, both having a 1023 
-  character maximum.
+character maximum.
 - Under some circumstances, if `exit` is the first command, it may not exit the
-  shell properly.
+shell properly.
 - Rshell assumes user enters commands in a legal fashion like entering two "&&" 
-  or "||"
+or "||"
 - `HEAD` command will leave program running. `^C` will quit the stuck program
 - `rm -rf <filename>` if the filename is invalid, rshell will not output an error
 - `vim <filename>` will work but will lag
 - Symbols such as `$`, `{`, `^`, etc. inputted as arguments will cause parsing 
-  issues. 
+issues. 
 - If segmentation fault were to occur during first run, disable `get_them_dets()`
-  in main.cpp and enable `$`. This is due to `getlogin()` and `gethostname()` 
-  functions not working properly in certain environments. Should work in hammer
-  server. 
+in main.cpp and enable `$`. This is due to `getlogin()` and `gethostname()` 
+functions not working properly in certain environments. Should work in hammer
+server. 

@@ -28,8 +28,8 @@ int main(){
         typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
         
         //command prompt
-        cout << "$ "; 
-        //get_them_dets();
+//        cout << "$ "; 
+        get_them_dets();
         
         //read in user input
         getline(cin, user_input);
